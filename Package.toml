@@ -1,0 +1,11 @@
+[package]
+    name =                 "fiveroleplay"
+    author =               "Shazuub"
+    version =              "0.0.1-alpha"
+    image =                "https://cdn.discordapp.com/attachments/731655356966502470/1020772188107849780/unnamed.png"
+    type =                 "game-mode"
+    force_no_map_script =  false
+    auto_cleanup =         true
+    packages_requirements = []
+    assets_requirements = []
+    compatible_maps = []
