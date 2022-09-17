@@ -18,53 +18,40 @@ function SpawnCharacter(player, x, y, z)
     player:Possess(new_character)
 end
 
-Player.Subscribe("Spawn", function()
-    for k, player in pairs(Player.GetAll()) do
-        MySQL:Select("SELECT * FROM players WHERE steam = "..player:GetSteamID(), function(rows)
-            if #rows <= 0 then
-    
-                MySQL:Execute([[
-                INSERT INTO `players` (`steam`,`rank`) VALUES (?,?)]], function()
-                    xPlayer[player:GetSteamID()] = {
-                        steam = player:GetSteamID(),
-                        position = {}
-                    }
-                    SpawnCharacter(player, 0, 0, 50)
-                end, player:GetSteamID(),'user')
-    
-            else
-                for k,v in pairs(rows) do
-                    xPlayer[player:GetSteamID()] = {
-                        steam = player:GetSteamID(),
-                        position_x = v.position_x,
-                        position_y = v.position_y,
-                        position_z = v.position_z
-                    }
-                    SpawnCharacter(player, v.position_x, v.position_y, v.position_z)
-                end
+Player.Subscribe("Spawn", function(player)
+    MySQL:Select("SELECT * FROM players WHERE steam = "..player:GetSteamID(), function(rows)
+        if #rows <= 0 then
+
+            MySQL:Execute([[
+            INSERT INTO `players` (`steam`,`rank`) VALUES (?,?)]], function()
+                xPlayer[player:GetSteamID()] = {
+                    steam = player:GetSteamID(),
+                }
+                SpawnCharacter(player, 0, 0, 50)
+            end, player:GetSteamID(),'user')
+            print('New player '..player:GetName())
+
+        else
+            for k,v in pairs(rows) do
+                xPlayer[player:GetSteamID()] = {
+                    steam = player:GetSteamID(),
+                }
+                SpawnCharacter(player, v.position_x, v.position_y, v.position_z)
+                print('Existing player '..player:GetName())
             end
-        end)
-    end
+        end
+    end)
 end)
 
 Player.Subscribe("Destroy", function(player)
     local character = player:GetControlledCharacter()
+    print(character)
+
+    MySQL:Execute([[UPDATE players SET position_x=(?),position_y=(?),position_z=(?) WHERE steam=(?)]], function(_, sError)
+      if sError then print( sError ) end
+    end, math.ceil(character:GetLocation().X), math.ceil(character:GetLocation().Y), math.ceil(character:GetLocation().Z), player:GetSteamID())
+
     if (character) then
         character:Destroy()
-    end
-end)
-
-Server.Subscribe("Tick", function()
-    for k, player in pairs(Player.GetAll()) do
-        local character = player:GetControlledCharacter()
-        if (character) then
-            if xPlayer[player:GetSteamID()] then
-                xPlayer[player:GetSteamID()].position_x = character:GetLocation().X
-                xPlayer[player:GetSteamID()].position_y = character:GetLocation().Y
-                xPlayer[player:GetSteamID()].position_z = character:GetLocation().Z
-                MySQL:Execute([[UPDATE players SET position_x=(?),position_y=(?),position_z=(?) WHERE steam=(?)]], function()
-                end, character:GetLocation().X, character:GetLocation().Y, character:GetLocation().Z + 50, player:GetSteamID())
-            end
-        end
     end
 end)
