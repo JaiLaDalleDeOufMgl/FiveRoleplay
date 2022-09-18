@@ -5,7 +5,7 @@
     # contributors
     author =               "Shazuub"
     # version
-    version =              "0.0.2-alpha"
+    version =              "0.0.3-alpha"
     # image URL
     image =                "https://cdn.discordapp.com/attachments/731655356966502470/1020772188107849780/unnamed.png"
     # package type: 'script' (normal package), 'game-mode' (unique package - can only load one at a time), 'library' (doesn't start a Lua VM) or 'loading-screen' (special package for loading screen)

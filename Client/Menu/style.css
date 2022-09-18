@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap');
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+html body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+}
+html body .window {
+  min-height: 274px;
+  max-height: 50%;
+  position: absolute;
+  width: 800px;
+  top: 50%;
+  left: 50%;
+  background: rgb(39 44 54);
+  transform: translate(-50%, -50%);
+}
+html body .window::before {
+  content: attr(data-title);
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+  display: block;
+  background-color: rgb(21 25 34);
+  color: #fff;
+  padding: 3px;
+  padding-left: 7px;
+}
+html body .window header {
+
+}
+html body .window header .cattegorys li {
+  display :grid;
+  width: 10vw;
+  height: 30px;
+  background: rgb(31 35 44);
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(90 93 99);
+  grid-gap: 1%;
+  text-align: center;
+  vertical-align: middle;
+}
+html body .window header .cattegorys li.selected {
+  background: rgb(40 44 57);
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(189 191 202);
+  text-align: center;
+  vertical-align: middle;
+}
